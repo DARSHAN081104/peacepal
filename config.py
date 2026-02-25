@@ -1,8 +1,16 @@
+import streamlit as st
 from dotenv import load_dotenv
 import os
 load_dotenv()
 
-API_KEY = os.getenv('API_KEY')
+try:
+    API_KEY=st.secrets["API_KEY"]
+except (FileNotFoundError, KeyError):
+    API_KEY = os.getenv('API_KEY')
+
+if not API_KEY:
+    st.error("🚨 API Key not found! Please check your Streamlit Secrets.")
+    st.stop()
 
 LLM_MODEL = "gemini-2.5-flash"
 
